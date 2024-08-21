@@ -24,7 +24,7 @@ const Projects = () => {
         const filteredRepos = data
           .filter(repo => !repo.private)
           .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-          .slice(0, 4); // Limit to 4 most recent repositories
+          .slice(0, 6); // Limit to 4 most recent repositories
 
         setRepos(filteredRepos);
       } catch (error) {
