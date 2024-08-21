@@ -9,12 +9,12 @@ You can get started by cloning the project to your local machine. Make sure you 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/dziqha/porfolio
+git clone https://github.com/Dziqha/Portfolio.git
 ```
 
 2. Navigate to the project folder:
 ```bash
-cd portfolio
+cd Portfolio
 ```
 
 3. Install the dependencies:
