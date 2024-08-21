@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 const GithubSearch = () => {
   const [username, setUsername] = useState('');
@@ -93,7 +94,14 @@ const GithubSearch = () => {
           <span 
             className="bg-gradient-to-r from-purple-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-transparent bg-clip-text px-6 cursor-pointer"
             onClick={navigateToGitHub}>
-            <img src={userData.avatar_url} alt="User Avatar" className="w-8 h-8 mr-2 rounded-full inline-block" />
+            <Image 
+              src={userData.avatar_url} 
+              alt="User Avatar" 
+              width={32}
+              height={32} 
+              className="rounded-full inline-block mr-2"
+              unoptimized
+            />
             Preview user: <span className="font-bold">{userData.login}</span>
           </span>
         ) : (

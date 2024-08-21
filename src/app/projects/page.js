@@ -1,6 +1,7 @@
-// components/Projects.js
 "use client";
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faCodeBranch } from '@fortawesome/free-solid-svg-icons';
 
@@ -43,19 +44,30 @@ const Projects = () => {
           <div>Projects could not be retrieved.</div>
         ) : (
           repos.map(repo => (
-            <a
+            <div
               key={repo.id}
-              href={repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex flex-col justify-between px-5 py-3 bg-gray-800 bg-opacity-30 border-gray-600 border rounded-lg text-sm"
             >
               <div className="flex items-center gap-2 text-gray-400">
-                <img src={repo.owner.avatar_url} alt={repo.owner.login} className="rounded-full w-8 h-8" />
+                <Image
+                  src={repo.owner.avatar_url}
+                  alt={repo.owner.login}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                  unoptimized
+                />
                 <span>{repo.owner.login}</span>
               </div>
-              <div className={`font-bold text-lg ${repo.archived ? 'line-through' : ''}`}>
-                {repo.name}
+              <div className="font-bold text-lg">
+                <Link
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-blue-500 hover:underline ${repo.archived ? 'line-through' : ''}`}
+                >
+                  {repo.name}
+                </Link>
               </div>
               <div>{repo.description}</div>
               <div className="flex mt-2 gap-4 text-gray-400">
@@ -68,7 +80,7 @@ const Projects = () => {
                   {repo.forks_count}
                 </div>
               </div>
-            </a>
+            </div>
           ))
         )}
       </div>

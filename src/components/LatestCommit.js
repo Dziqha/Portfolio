@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodeBranch } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 const LatestCommit = () => {
   const [commit, setCommit] = useState(null);
@@ -74,7 +75,7 @@ const LatestCommit = () => {
         className="flex items-center gap-2 whitespace-nowrap underline hover:text-gruvbox-milk"
       >
         gimme a
-        <img src="/star.png" alt="star" className="w-4 h-4" />
+        <Image src="/star.png" alt="star" width={16} height={16} unoptimized />
       </a>
     </div>
   );
