@@ -1,32 +1,11 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Hamburger from 'hamburger-react'; 
+import Clock from './JamAnalog';
 
 const Navbar = () => {
-  const [profilePicUrl, setProfilePicUrl] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchProfilePic = async () => {
-      try {
-        const response = await fetch('https://api.github.com/users/Dziqha',
-          {
-            headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_GH_TOKEN}` }
-          }
-        );
-        if (!response.ok) throw new Error('Failed to fetch profile data');
-        const data = await response.json();
-        setProfilePicUrl(data.avatar_url);
-      } catch (error) {
-        console.error('Error fetching GitHub profile picture:', error);
-        setProfilePicUrl('/favicon.ico'); // Use a default image
-      }
-    };
-
-    fetchProfilePic();
-  }, []);
-
   const handleLinkClick = () => {
     setMenuOpen(false);
   };
@@ -35,8 +14,7 @@ const Navbar = () => {
     <nav className="navbar p-4 flex items-center relative bg-gray-800">
       <div className="navbar-content container mx-auto flex items-center justify-between max-w-screen-lg">
         {/* Logo */}
-        <img src={profilePicUrl} alt="Profile Logo" className="logo h-10 w-10 rounded-full" />
-
+          <Clock />
         {/* Navbar Links (Desktop) */}
         <div className="nav-links hidden md:flex items-center flex-grow justify-center space-x-5">
           <Link href="/" className="nav-item text-yellow-200 text-lg hover:underline">Home</Link>
@@ -54,7 +32,7 @@ const Navbar = () => {
             toggled={menuOpen}
             toggle={setMenuOpen}
             size={24}
-            color="#e7d7ad" // Set your preferred color
+            color="#e7d7ad"
           />
         </div>
       </div>
