@@ -7,13 +7,19 @@ import {
   faLinkedin,
   faInstagram,
   faYoutube,
+  faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import Navbar from "./Navbar";
+import { socialLinks } from "@/configs/socials";
 
 const GitHubUser = ({ username }) => {
   const [status, setStatus] = useState("text-gruvbox-gray");
-  const [githubData, setGitHubData] = useState({ name: "", bio: "" });
+  const [githubData, setGitHubData] = useState({
+    name: "",
+    bio: "",
+    twitter: "",
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,7 +34,11 @@ const GitHubUser = ({ username }) => {
         );
         if (!response.ok) throw new Error("GitHub API returned an error.");
         const data = await response.json();
-        setGitHubData({ name: data.name, bio: data.bio });
+        setGitHubData({
+          name: data.name,
+          bio: data.bio,
+          twitter: data.twitter_username,
+        });
       } catch (error) {
         console.error("Error fetching GitHub user data:", error);
         setGitHubData({ name: "GitHub data unavailable", bio: "" });
@@ -38,39 +48,47 @@ const GitHubUser = ({ username }) => {
     fetchUserData();
   }, []);
 
-  const socialLinks = [
-    { href: "https://github.com/Dziqha", icon: faGithub, label: "GitHub" },
-    {
-      href: "https://linkedin.com/in/dziqha",
-      icon: faLinkedin,
-      label: "LinkedIn",
-    },
-    {
-      href: "https://www.instagram.com/dziq_ha",
-      icon: faInstagram,
-      label: "Instagram",
-    },
-    {
-      href: "https://www.youtube.com/channel/UC1iyfW0kdcSelRzL2FnuoiA",
-      icon: faYoutube,
-      label: "YouTube",
-    },
-  ];
-
   let navItems;
+  let selectedSocialLinks;
 
   if (username == process.env.NEXT_PUBLIC_GITHUB_USERNAME) {
+    selectedSocialLinks = socialLinks;
     navItems = [
       { href: "/", title: "Home" },
       { href: "/projects", title: "Projects" },
       { href: "/contact", title: "Contact" },
     ];
   } else {
+    selectedSocialLinks = [
+      {
+        href: `https://github.com/${username}`,
+        icon: (
+          <FontAwesomeIcon icon={faGithub} className="w-6 h-6 text-gray-700" />
+        ),
+        label: "GitHub",
+      },
+      ...(githubData.twitter
+        ? [
+            {
+              href: `https://twitter.com/${githubData.twitter}`,
+              icon: (
+                <FontAwesomeIcon
+                  icon={faTwitter}
+                  className="w-6 h-6 text-gray-700"
+                />
+              ),
+              label: "Twitter",
+            },
+          ]
+        : []),
+    ];
+
     navItems = [
       { href: `/user/${username}`, title: "Home" },
       { href: `/user/${username}/projects`, title: "Projects" },
     ];
   }
+
   return (
     <>
       <div className="mb-10">
@@ -91,17 +109,14 @@ const GitHubUser = ({ username }) => {
           )}
         </div>
         <div className="flex gap-6 mt-5 text-xl">
-          {socialLinks.map((link, index) => (
+          {selectedSocialLinks.map((link, index) => (
             <Link key={index} href={link.href} passHref>
               <div
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-center items-center w-12 h-12 border border-gray-300 rounded-full hover:bg-gray-100 transition-colors duration-200"
               >
-                <FontAwesomeIcon
-                  icon={link.icon}
-                  className={`w-6 h-6 text-gray-700 ${link.label.toLowerCase()}-icon`}
-                />
+                {link.icon}
                 <span className="sr-only">{link.label}</span>
               </div>
             </Link>
